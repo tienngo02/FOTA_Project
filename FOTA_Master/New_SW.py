@@ -1,24 +1,29 @@
 import subprocess
+import sys
 import time
 from apscheduler.schedulers.background import BackgroundScheduler
 
-bootloader = "main.py"
-arg = "rollback"
+try:
+    bootloader = "main.py"
+    arg = "rollback"
 
-print("New SW is running...")
-
-
-def job():
-    print(f"New SW running at: {time.time()}")
+    print("New SW is running...")
 
 
-scheduler = BackgroundScheduler()
-scheduler.add_job(job, 'interval', seconds=2)
-scheduler.start()
+    def job():
+        print(f"New SW running at: {time.time()}")
 
-time.sleep(5)
 
-subprocess.Popen(['python', bootloader, arg])
+    scheduler = BackgroundScheduler()
+    scheduler.add_job(job, 'interval', seconds=2)
+    scheduler.start()
+
+    time.sleep(5)
+    pri('TEST ROLLBACK')
+
+except Exception as e:
+    print(f"Error: {e}", file=sys.stderr)
+    subprocess.Popen(['python', bootloader, arg])
 
 exit()
 

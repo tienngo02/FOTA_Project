@@ -1,9 +1,10 @@
-import subprocess
-import sys
-import time
-from apscheduler.schedulers.background import BackgroundScheduler
-
 try:
+    import subprocess
+    import sys
+    import time
+    from apscheduler.schedulers.background import BackgroundScheduler
+
+
     bootloader = "main.py"
     arg = "rollback"
 

@@ -4,8 +4,10 @@ import sys
 import time
 from apscheduler.schedulers.background import BackgroundScheduler
 
+
 def job():
     print(f"Bootloader SW running at: {time.time()}")
+
 
 scheduler = BackgroundScheduler()
 scheduler.add_job(job, 'interval', seconds=2)
@@ -13,7 +15,7 @@ scheduler.start()
 
 print()
 print("================================")
-print("Old bootloader is running...")
+print("New bootloader is running...")
 
 app = 'App.py'
 new_SW = 'New_SW.py'
@@ -22,9 +24,11 @@ boot = 'main.py'
 backup_app = 'Backup_app.py'
 backup_boot = 'Backup_boot'
 
+
 def get_file_size(file_path):
     file_size = os.path.getsize(file_path)
     return file_size
+
 
 def main_run():
     user_input = sys.argv[1]

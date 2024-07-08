@@ -1,4 +1,5 @@
 import subprocess
+import sys
 import time
 from apscheduler.schedulers.background import BackgroundScheduler
 
@@ -19,5 +20,5 @@ scheduler.start()
 time.sleep(5)
 
 subprocess.Popen(['python', bootloader, arg])
-
 exit()
+

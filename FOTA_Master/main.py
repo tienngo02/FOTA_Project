@@ -61,7 +61,6 @@ def main_run():
         print("Wrong input")
         return
 
-    # Khởi động tiến trình con và kiểm tra trạng thái ngay lập tức
     if get_file_size(app) > 0:
         subprocess.Popen(['python', app])
     else:

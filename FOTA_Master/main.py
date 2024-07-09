@@ -5,7 +5,7 @@ import time
 from apscheduler.schedulers.background import BackgroundScheduler
 
 def job():
-    print(f"Bootloader SW running at: {time.time()}")
+    print(f"Old bootloader SW running at: {time.time()}")
 
 scheduler = BackgroundScheduler()
 scheduler.add_job(job, 'interval', seconds=2)
@@ -36,21 +36,15 @@ def main_run():
         print("Activation new boot")
         os.rename(boot, backup_boot)
         os.rename(new_boot, boot)
-        if get_file_size(app) > 0:
-            subprocess.Popen(['python', boot, 'runningSW'])
-            return
-        else:
-            print('App compile fail')
+        subprocess.Popen(['python', boot, 'runningSW'])
+        return
 
     elif user_input == "rollback_boot":
         print("Rollback boot")
         os.rename(boot, new_boot)
         os.rename(backup_boot, boot)
-        if get_file_size(app) > 0:
-            subprocess.Popen(['python', boot, 'runningSW'])
-            return
-        else:
-            print('App compile fail')
+        subprocess.Popen(['python', boot, 'runningSW'])
+        return
 
     elif user_input == "activation":
         print("Activation")

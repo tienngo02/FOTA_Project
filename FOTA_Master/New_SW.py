@@ -1,9 +1,9 @@
-import subprocess
-import sys
-import time
-from apscheduler.schedulers.background import BackgroundScheduler
-
 try:
+    import subprocess
+    import sys
+    import time
+    from apscheduler.schedulers.background import BackgroundScheduler
+
     bootloader = "main.py"
     arg = "rollback"
 
@@ -20,10 +20,11 @@ try:
 
     time.sleep(5)
     pri('TEST ROLLBACK')
+    print("TEST")
+    exit()
 
 except Exception as e:
     print(f"Error: {e}", file=sys.stderr)
     subprocess.Popen(['python', bootloader, arg])
 
-exit()
 

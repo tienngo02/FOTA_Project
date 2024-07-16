@@ -38,7 +38,7 @@ class Cloud_COM:
         self.ssl_context = ssl.create_default_context(cafile=self.ca_cert_path)
         self.ftps = MyFTP_TLS(context=self.ssl_context)
         # self.ftps.context
-        self.ftps.set_debuglevel(0)
+        self.ftps.set_debuglevel(1)
         self.MQTTclient = mqtt.Client(callback_api_version=mqtt.CallbackAPIVersion.VERSION2,
                     protocol=mqtt.MQTTv5,
                     transport=self.MQTTProtocol)
@@ -54,29 +54,30 @@ class Cloud_COM:
         self.FTP_Disconnect()
 
     def FTP_Connect(self):
-        try:
-            self.ftps.connect(self.host, self.FTPport)
+        # try:
+        self.ftps.connect(self.host, self.FTPport)
 
-            # print(self.ftps.getwelcome())
-            # print(self.ftps.sock)
+        # print(self.ftps.getwelcome())
+        # print(self.ftps.sock)
 
-            self.ftps.auth()
+        self.ftps.auth()
 
-            self.ftps.login(self.user, self.passwd, self.acct)
+        self.ftps.login(self.user, self.passwd, self.acct)
 
-            self.ftps.set_pasv(True)
-            self.ftps.prot_p()
-            self.ftps.cwd("SW")
-            self.isFTPConnected = True
-        except:
-            print("FTP Connect failed")
-            return
+        self.ftps.set_pasv(True)
+        self.ftps.prot_p()
+        self.ftps.cwd("SW")
+        self.isFTPConnected = True
+        # except:
+        #     print("FTP Connect failed")
+        #     return
 
     def FTP_Disconnect(self):
         self.ftps.quit()
         self.isFTPConnected = False
 
     def MQTT_Connect(self):
+        print('MQTT')
         self.MQTTclient.username_pw_set(self.user, self.passwd)
         self.MQTTclient.connect(self.host,self.MQTTPort)
         self.MQTTclient.loop_start()
@@ -97,12 +98,17 @@ class Cloud_COM:
 
 
     def startWaitNewSW(self,NewSWCB):
-        if self.isFTPConnected == False:
-            self.FTP_Connect()
-        if self.isMQTTConnected == False:
-            self.MQTT_Connect()
-        self.NotifiSW_CB = NewSWCB
-        self.MQTTclient.subscribe("SW/Jetson/#",qos=2)
+        try:
+            if self.isFTPConnected == False:
+                self.FTP_Connect()
+            if self.isMQTTConnected == False:
+                self.MQTT_Connect()
+            self.NotifiSW_CB = NewSWCB
+            self.MQTTclient.subscribe("SW/Jetson/#",qos=2)
+            return True
+        except Exception as e:
+            print("Connect error: ",e)
+            return False
     
     def GetNewSW(self,SWname):
         try:

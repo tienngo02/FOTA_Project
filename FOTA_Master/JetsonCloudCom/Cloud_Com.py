@@ -132,6 +132,20 @@ if __name__ == '__main__':
     print()
     print("Path: ",sys.path)
     Cloud = Cloud_COM()
-    Cloud.startWaitNewSW(NewSW_CB)
+    connectCount = 0
+    isConnect = Cloud.startWaitNewSW(NewSW_CB)
+    while connectCount < 5 :
+        if isConnect:
+            break
+        else:
+            print("Connect server error, retrying")
+            time.sleep(5)
+            isConnect = Cloud.startWaitNewSW(NewSW_CB)
+            connectCount += 1
+    
+    if not isConnect:
+        print("Can not connect to server")
+
     while True:
-        time.sleep(1)
+        
+        time.sleep(0.001)

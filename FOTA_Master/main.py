@@ -4,12 +4,12 @@ import sys
 import time
 from apscheduler.schedulers.background import BackgroundScheduler
 
-def job():
-    print(f"Old bootloader SW running at: {time.time()}")
-
-scheduler = BackgroundScheduler()
-scheduler.add_job(job, 'interval', seconds=2)
-scheduler.start()
+# def job():
+#     print(f"Old bootloader SW running at: {time.time()}")
+#
+# scheduler = BackgroundScheduler()
+# scheduler.add_job(job, 'interval', seconds=2)
+# scheduler.start()
 
 print()
 print("================================")
@@ -17,10 +17,13 @@ print("Old bootloader is running...")
 
 app = 'App.py'
 new_SW = 'New_SW.py'
-new_boot = 'New_boot.py'
+new_boot = 'FOTA_Master_Boot_new.py'
 boot = 'main.py'
 backup_app = 'Backup_app.py'
 backup_boot = 'Backup_boot'
+
+
+subprocess.Popen(['python', '-V'])
 
 def get_file_size(file_path):
     file_size = os.path.getsize(file_path)
@@ -62,13 +65,17 @@ def main_run():
         return
 
     if get_file_size(app) > 0:
-        subprocess.Popen(['python', app])
+        process = subprocess.run(['python', app])
+        if process.returncode == 0:
+            print("Run app success")
+        else:
+            print("Run app fail")
     else:
         print('App compile fail')
 
 
 if __name__ == '__main__':
-    time.sleep(5)
+    time.sleep(3)
     main_run()
     print("Main program finished.")
     exit()

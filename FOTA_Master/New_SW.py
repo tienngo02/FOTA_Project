@@ -1,4 +1,4 @@
-try:
+ty:
     import subprocess
     import sys
     import time
